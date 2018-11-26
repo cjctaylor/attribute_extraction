@@ -15,7 +15,7 @@ class Hyperparams:
     target_test = 'corpora/IWSLT16.TED.tst2014.de-en.en.xml'
     
     # training
-    batch_size = 64  # alias = N
+    batch_size = 32  # alias = N
     lr = 0.0001  # learning rate. In paper, learning rate is adjusted to the global step.
     logdir = 'logdir'  # log directory
     
@@ -25,7 +25,7 @@ class Hyperparams:
     min_cnt = 20 # words whose occurred less than min_cnt are encoded as <UNK>.
     #  alias = C
     num_blocks = 6 # number of encoder/decoder blocks
-    num_epochs = 100
+    num_epochs = 50
     num_heads = 8
     num_classes = 2
     char_dim = 100

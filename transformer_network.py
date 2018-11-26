@@ -13,15 +13,16 @@ class Transformer(object):
         with tf.name_scope("embedding"):
             with tf.name_scope("embedding"):
                 word_embedding = tf.get_variable(initializer=char_embedding, name='word_embedding')
-                pos_embedding = tf.get_variable('pos_embedding', [hp.pos_num, hp.pos_dim])
+                pos_embedding = tf.get_variable('pos_embedding', [hp.pos_num, hp.pos_dim],
+                                                initializer=tf.contrib.layers.xavier_initializer())
 
                 self.embed_value = tf.concat(axis=2, values=[tf.nn.embedding_lookup(word_embedding, self.input_word),
                                                              tf.nn.embedding_lookup(pos_embedding, self.input_pos1),
                                                              tf.nn.embedding_lookup(pos_embedding, self.input_pos2)])
 
-                self.embed_value = tf.layers.dropout(self.embed_value,
-                                                     rate=hp.dropout_rate,
-                                                     training=tf.convert_to_tensor(is_training))
+                # self.embed_value = tf.layers.dropout(self.embed_value,
+                #                                      rate=hp.dropout_rate,
+                #                                      training=tf.convert_to_tensor(is_training))
 
         with tf.name_scope("encoder"):
             self.enc = multihead_attention(queries=self.embed_value,

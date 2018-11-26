@@ -1,12 +1,9 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 
 import tensorflow as tf
 import numpy as np
 import hyperparams
-# import cnn_network
-# import cnn_att_network as cnn_network
 import transformer_network
 import datetime
 

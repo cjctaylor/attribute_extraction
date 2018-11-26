@@ -1,13 +1,7 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 
 import tensorflow as tf
 import numpy as np
-# import cnn_network
-# import cnn_att_network as cnn_network
-# import rcnn_network
-# import rcnn_attention_network as rcnn_network
 import transformer_network
 import hyperparams
 
@@ -20,7 +14,6 @@ def main(_):
     test_pos1 = np.load('./data/test_pos1.npy')
     test_pos2 = np.load('./data/test_pos2.npy')
     test_hp = hyperparams.Hyperparams()
-    # test_settings.vocab_size = len(word_embedding)
     test_hp.num_classes = len(test_y[0])
     test_hp.word_length = 70
     test_hp.batch_size = len(test_word)
