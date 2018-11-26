@@ -31,6 +31,6 @@ class Hyperparams:
     char_dim = 100
     pos_dim = 10
     pos_num = 143
-    dropout_rate = 0.5
+    dropout_rate = 0.1
     sinusoid = False  # If True, use sinusoid. If false, positional embedding.
     hidden_units = char_dim + 2*pos_dim
