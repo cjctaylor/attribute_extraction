@@ -11,18 +11,26 @@ class Transformer(object):
         self.input_y = tf.placeholder(tf.int32, [None, hp.num_classes], name='true_labels')
 
         with tf.name_scope("embedding"):
-            with tf.name_scope("embedding"):
-                word_embedding = tf.get_variable(initializer=char_embedding, name='word_embedding')
-                pos_embedding = tf.get_variable('pos_embedding', [hp.pos_num, hp.pos_dim],
-                                                initializer=tf.contrib.layers.xavier_initializer())
+            ## Embedding
+            self.embed_value = embedding(self.input_word,
+                                         vocab_size=len(char_embedding),
+                                         num_units=hp.char_dim,
+                                         scale=True,
+                                         scope="enc_embed")
 
-                self.embed_value = tf.concat(axis=2, values=[tf.nn.embedding_lookup(word_embedding, self.input_word),
-                                                             tf.nn.embedding_lookup(pos_embedding, self.input_pos1),
-                                                             tf.nn.embedding_lookup(pos_embedding, self.input_pos2)])
+            self.embed_value += embedding(self.input_pos1,
+                                          vocab_size=hp.pos_num,
+                                          num_units=hp.pos_dim,
+                                          zero_pad=False,
+                                          scale=False,
+                                          scope="enc_pos1")
 
-                # self.embed_value = tf.layers.dropout(self.embed_value,
-                #                                      rate=hp.dropout_rate,
-                #                                      training=tf.convert_to_tensor(is_training))
+            self.embed_value += embedding(self.input_pos2,
+                                          vocab_size=hp.pos_num,
+                                          num_units=hp.pos_dim,
+                                          zero_pad=False,
+                                          scale=False,
+                                          scope="enc_pos2")
 
         with tf.name_scope("encoder"):
             self.enc = multihead_attention(queries=self.embed_value,

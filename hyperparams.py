@@ -8,11 +8,6 @@ https://www.github.com/kyubyong/transformer
 
 class Hyperparams:
     '''Hyperparameters'''
-    # data
-    source_train = 'corpora/train.tags.de-en.de'
-    target_train = 'corpora/train.tags.de-en.en'
-    source_test = 'corpora/IWSLT16.TED.tst2014.de-en.de.xml'
-    target_test = 'corpora/IWSLT16.TED.tst2014.de-en.en.xml'
     
     # training
     batch_size = 32  # alias = N
@@ -28,9 +23,9 @@ class Hyperparams:
     num_epochs = 50
     num_heads = 8
     num_classes = 2
-    char_dim = 100
-    pos_dim = 10
+    char_dim = 512
+    pos_dim = 512
     pos_num = 143
     dropout_rate = 0.1
     sinusoid = False  # If True, use sinusoid. If false, positional embedding.
-    hidden_units = char_dim + 2*pos_dim
+    hidden_units = 512

@@ -49,7 +49,6 @@ def embedding(inputs,
               scale=True,
               scope="embedding", 
               reuse=None,
-              initializer=tf.contrib.layers.xavier_initializer(),
               ):
     '''Embeds a given tensor.
 
@@ -111,7 +110,7 @@ def embedding(inputs,
         lookup_table = tf.get_variable('lookup_table',
                                        dtype=tf.float32,
                                        shape=[vocab_size, num_units],
-                                       initializer=initializer)
+                                       initializer=tf.contrib.layers.xavier_initializer())
         if zero_pad:
             lookup_table = tf.concat((tf.zeros(shape=[1, num_units]),
                                       lookup_table[1:, :]), 0)
