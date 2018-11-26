@@ -1,0 +1,36 @@
+# -*- coding: utf-8 -*-
+'''
+June 2017 by kyubyong park. 
+kbpark.linguist@gmail.com.
+https://www.github.com/kyubyong/transformer
+'''
+
+
+class Hyperparams:
+    '''Hyperparameters'''
+    # data
+    source_train = 'corpora/train.tags.de-en.de'
+    target_train = 'corpora/train.tags.de-en.en'
+    source_test = 'corpora/IWSLT16.TED.tst2014.de-en.de.xml'
+    target_test = 'corpora/IWSLT16.TED.tst2014.de-en.en.xml'
+    
+    # training
+    batch_size = 64  # alias = N
+    lr = 0.0001  # learning rate. In paper, learning rate is adjusted to the global step.
+    logdir = 'logdir'  # log directory
+    
+    # model
+    maxlen = 70 # Maximum number of words in a sentence. alias = T.
+                # Feel free to increase this if you are ambitious.
+    min_cnt = 20 # words whose occurred less than min_cnt are encoded as <UNK>.
+    #  alias = C
+    num_blocks = 6 # number of encoder/decoder blocks
+    num_epochs = 100
+    num_heads = 8
+    num_classes = 2
+    char_dim = 100
+    pos_dim = 10
+    pos_num = 143
+    dropout_rate = 0.5
+    sinusoid = False  # If True, use sinusoid. If false, positional embedding.
+    hidden_units = char_dim + 2*pos_dim
