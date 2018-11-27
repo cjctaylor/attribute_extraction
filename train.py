@@ -29,7 +29,7 @@ def main(_):
         with tf.variable_scope("model", reuse=None, initializer=initializer):
             network = transformer_network.Transformer(char_embedding=word_embedding, hp=hp, is_training=True)
         global_step = tf.Variable(0, name="global_step", trainable=False)
-        optimizer = tf.train.AdamOptimizer(0.0005)
+        optimizer = tf.train.AdamOptimizer(learning_rate=hp.lr, beta1=0.9, beta2=0.98, epsilon=1e-8)
 
         train_op = optimizer.minimize(network.final_loss, global_step=global_step)
         saver = tf.train.Saver(max_to_keep=None)
