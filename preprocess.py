@@ -3,6 +3,7 @@
 
 
 import numpy as np
+from sklearn.model_selection import train_test_split
 
 
 # embedding the position
@@ -83,18 +84,21 @@ def read_data():
             relation2id[content[0]] = index
 
     print("Reading train and test data...")
-    train_x, train_y = data2array("train.txt", word2id, relation2id)
+    x, y = data2array("train.txt", word2id, relation2id)
+    train_x, dev_x, train_y, dev_y = train_test_split(x, y, test_size=0.1, random_state=42)
     test_x, test_y = data2array("test.txt", word2id, relation2id)
 
     np.save('./data/vec.npy', vec)
     np.save('./data/train_x.npy', train_x)
     np.save('./data/train_y.npy', train_y)
+    np.save('./data/dev_x.npy', dev_x)
+    np.save('./data/dev_y.npy', dev_y)
     np.save('./data/test_x.npy', test_x)
     np.save('./data/test_y.npy', test_y)
 
 
 def seperate():
-    print('seperatint train data')
+    print('seperating train data')
     train_x = np.load('./data/train_x.npy')
     train_word = []
     train_pos1 = []
@@ -115,7 +119,28 @@ def seperate():
     np.save('./data/train_pos1.npy', np.array(train_pos1))
     np.save('./data/train_pos2.npy', np.array(train_pos2))
 
-    print('seperatint test data')
+    print('seperating dev data')
+    train_x = np.load('./data/dev_x.npy')
+    train_word = []
+    train_pos1 = []
+    train_pos2 = []
+    for sentence_feature in train_x:
+        word_feature = []
+        pos1_feature = []
+        pos2_feature = []
+        for [word, pos1, pos2] in sentence_feature:
+            word_feature.append(word)
+            pos1_feature.append(pos1)
+            pos2_feature.append(pos2)
+        train_word.append(word_feature)
+        train_pos1.append(pos1_feature)
+        train_pos2.append(pos2_feature)
+
+    np.save('./data/dev_word.npy', np.array(train_word))
+    np.save('./data/dev_pos1.npy', np.array(train_pos1))
+    np.save('./data/dev_pos2.npy', np.array(train_pos2))
+
+    print('seperating test data')
     test_x = np.load('./data/test_x.npy')
     test_word = []
     test_pos1 = []
