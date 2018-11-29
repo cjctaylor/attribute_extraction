@@ -85,7 +85,7 @@ def read_data():
 
     print("Reading train and test data...")
     x, y = data2array("train.txt", word2id, relation2id)
-    train_x, dev_x, train_y, dev_y = train_test_split(x, y, test_size=0.1, random_state=42)
+    train_x, dev_x, train_y, dev_y = train_test_split(x, y, test_size=0.05)
     test_x, test_y = data2array("test.txt", word2id, relation2id)
 
     np.save('./data/vec.npy', vec)

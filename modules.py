@@ -45,7 +45,7 @@ def normalize(inputs,
 def embedding(inputs, 
               vocab_size, 
               num_units, 
-              zero_pad=True, 
+              zero_pad=False,
               scale=True,
               scope="embedding", 
               reuse=None,
@@ -124,10 +124,12 @@ def embedding(inputs,
 
 def positional_encoding(inputs,
                         num_units,
-                        zero_pad=True,
+                        num_pos,
+                        zero_pad=False,
                         scale=True,
                         scope="positional_encoding",
-                        reuse=None):
+                        reuse=None,
+                        ):
     '''Sinusoidal Positional_Encoding.
 
     Args:
@@ -143,14 +145,14 @@ def positional_encoding(inputs,
         A 'Tensor' with one more rank than inputs's, with the dimensionality should be 'num_units'
     '''
 
-    N, T = inputs.get_shape().as_list()
+    # N, T = inputs.get_shape().as_list()
     with tf.variable_scope(scope, reuse=reuse):
-        position_ind = tf.tile(tf.expand_dims(tf.range(T), 0), [N, 1])
+        # position_ind = tf.tile(tf.expand_dims(tf.range(T), 0), [N, 1])
 
         # First part of the PE function: sin and cos argument
         position_enc = np.array([
             [pos / np.power(10000, 2.*i/num_units) for i in range(num_units)]
-            for pos in range(T)])
+            for pos in range(num_pos)]).astype(np.float32)
 
         # Second part, apply the cosine to even columns and sin to odds.
         position_enc[:, 0::2] = np.sin(position_enc[:, 0::2])  # dim 2i
@@ -162,7 +164,7 @@ def positional_encoding(inputs,
         if zero_pad:
             lookup_table = tf.concat((tf.zeros(shape=[1, num_units]),
                                       lookup_table[1:, :]), 0)
-        outputs = tf.nn.embedding_lookup(lookup_table, position_ind)
+        outputs = tf.nn.embedding_lookup(lookup_table, inputs)
 
         if scale:
             outputs = outputs * num_units**0.5

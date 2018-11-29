@@ -11,26 +11,36 @@ class Transformer(object):
         self.input_y = tf.placeholder(tf.int32, [None, hp.num_classes], name='true_labels')
 
         with tf.name_scope("embedding"):
-            ## Embedding
+            ## Embedding_1
             self.enc = embedding(self.input_word,
                                  vocab_size=len(char_embedding),
                                  num_units=hp.char_dim,
                                  scale=True,
                                  scope="enc_embed")
 
-            self.enc += embedding(self.input_pos1,
-                                  vocab_size=hp.pos_num,
-                                  num_units=hp.pos_dim,
-                                  zero_pad=False,
-                                  scale=False,
-                                  scope="enc_pos1")
+            self.enc += positional_encoding(self.input_pos1,
+                                            hp.pos_dim,
+                                            hp.pos_num,
+                                            scale=False,
+                                            scope="enc_pos1")
 
-            self.enc += embedding(self.input_pos2,
-                                  vocab_size=hp.pos_num,
-                                  num_units=hp.pos_dim,
-                                  zero_pad=False,
-                                  scale=False,
-                                  scope="enc_pos2")
+            self.enc += positional_encoding(self.input_pos2,
+                                            hp.pos_dim,
+                                            hp.pos_num,
+                                            scale=False,
+                                            scope="enc_pos2")
+
+            self.enc = tf.layers.dropout(self.enc,
+                                         rate=hp.dropout_rate,
+                                         training=tf.convert_to_tensor(is_training))
+
+            ##embedding_2
+            # self.char_mapping = tf.get_variable('char_embedding', initializer=char_embedding)
+            # self.pos1_embedding = positional_encoding(self.input_pos1, hp.pos_dim, hp.pos_num, scale=False)
+            # self.pos2_embedding = positional_encoding(self.input_pos2, hp.pos_dim, hp.pos_num, scale=False)
+            # self.enc = tf.add_n([tf.nn.embedding_lookup(self.char_mapping, self.input_word),
+            #                      self.pos1_embedding, self.pos2_embedding])
+            # print(self.enc.shape)
 
         with tf.name_scope("encoder"):
             for i in range(hp.num_blocks):

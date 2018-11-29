@@ -122,15 +122,19 @@ def main(_):
                         cnt_pre += 1
                     if item_y[1] == 1 and item_pre == 1:
                         cnt_all += 1
-                precision = float(cnt_all / cnt_pre)
-                recall = float(cnt_all / cnt_y)
-                f1 = 2 * precision * recall / (precision + recall)
-                print("Epoch: {}".format(epoch))
-                print("precision: %.4f " % precision, "cnt_pre: %d " % cnt_pre)
-                print("recall: %.4f " % recall, "cnt_y: %d " % cnt_y)
-                print("f1: %.4f " % f1, "true: %d " % cnt_all)
+                if cnt_pre == 0:
+                    print("Epoch: {}".format(epoch))
+                    print("all 0")
+                else:
+                    precision = float(cnt_all / cnt_pre)
+                    recall = float(cnt_all / cnt_y)
+                    f1 = 2 * precision * recall / (precision + recall)
+                    print("Epoch: {}".format(epoch))
+                    print("precision: %.4f " % precision, "cnt_pre: %d " % cnt_pre)
+                    print("recall: %.4f " % recall, "cnt_y: %d " % cnt_y)
+                    print("f1: %.4f " % f1, "true: %d " % cnt_all)
 
-                if epoch < 5:
+                if epoch < 10:
                     continue
                 elif f1 > best_f1:
                     best_f1 = f1
@@ -139,7 +143,7 @@ def main(_):
                     saver.save(sess, save_path + 'transformer_model')
                 else:
                     cnt += 1
-                    if cnt >= 3:
+                    if cnt >= 5:
                         break
 
 
